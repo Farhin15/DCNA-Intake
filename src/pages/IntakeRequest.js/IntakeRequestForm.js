@@ -7,6 +7,7 @@ import { useAddNewPostMutation } from '../../feature/api/apiSlince'
 import Alert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import img from '../../asset/image/success.png'
+import ThankYou from '../../components/Thankyou';
 let requestor_typeItems = []
 
 const requestTypeItems = [
@@ -32,6 +33,8 @@ const initialFValues = {
 export default function IntakeRquestForm() {
     const [addNewPost, response] = useAddNewPostMutation()
     const [open, setOpen] = React.useState(false);
+    const [success, setsuccess] = React.useState(false);
+    const [Error, setError] = React.useState(false);
     const [isSubmit, setIsSubmit] = React.useState(false);
 
     const validate = (fieldValues = values) => {
@@ -66,15 +69,20 @@ export default function IntakeRquestForm() {
         if (validate()) {
             console.log(values);
             // resetForm()
-            addNewPost({ url: '/intake-form', method: 'POST', payload: values })
+            addNewPost({ url: '/intake-form/', method: 'POST', payload: values })
                 .unwrap()
                 .then((res) => {
                     setOpen(true);
+                    setError('');
+                    setsuccess('Request submitted successfully!');
                     setIsSubmit(true);
                     resetForm();
                 })
                 .catch((error) => {
-                    console.log(error)
+                    console.log(error.data.message)
+                    setOpen(true);
+                    setsuccess('');
+                    setError(error.data.message)
                 })
         }
     }
@@ -84,15 +92,15 @@ export default function IntakeRquestForm() {
             <Snackbar
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 open={open}
-                autoHideDuration={3000} onClose={() => setOpen(false)}>
-                <Alert onClose={() => setOpen(false)} sx={{ color: '#ffffff' }} severity="success" variant="filled">
-                    Request submitted successfully!
+                autoHideDuration={2000} onClose={() => setOpen(false)}>
+                <Alert onClose={() => setOpen(false)} sx={{ color: '#ffffff' }} severity={success ? "success" : "error"} variant="filled">
+                    {success ? success : Error}
                 </Alert>
             </Snackbar>
             <Form onSubmit={handleSubmit}>
                 <Grid container>
-                    {isSubmit ? <Grid item xs={12} style={{ textAlign: "center" }}>
-                        <img src={img} />
+                    {isSubmit ? <Grid container justifyContent='center' style={{ textAlign: "center" }}>
+                        <ThankYou />
                     </Grid> : <Grid item xs={10}>
                         <Controls.Select
                             name="state"
@@ -105,7 +113,7 @@ export default function IntakeRquestForm() {
                                     requestor_typeItems = [{ id: 'Customer', title: 'Customer' },
                                     { id: 'Employee', title: 'Employee' },
                                     { id: 'Job Applicant', title: 'Applicant' },
-                                    { id: 'Vendor', title: 'Franchisee' },]
+                                    { id: 'Vendor', title: 'Vendor' },]
                                 }
                                 values.requestor_type = 'Customer';
                                 handleInputChange(e)
