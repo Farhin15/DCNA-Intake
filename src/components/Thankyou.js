@@ -43,7 +43,8 @@ export default function ThankYou() {
             </CardContent>
             <Controls.Button
                 type="submit"
-                text="Close" />
+                text="Close"
+                onClick={() => window.close()} />
         </Card>
     );
 }

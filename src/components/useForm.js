@@ -23,7 +23,7 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
             [name]: value
         }
         setValues(resetValues)
-        if (validateOnChange)
+        if (validateOnChange && name !== 'state')
             validate({ [name]: value })
     }
 
