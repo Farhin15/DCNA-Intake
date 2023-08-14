@@ -25,6 +25,10 @@ const useStyles = makeStyles({
 export default function ThankYou() {
     const classes = useStyles();
 
+    const close = () => {
+        window.close()
+    }
+
     return (
         <Card className={classes.root}>
             {/* <CardMedia
@@ -44,7 +48,7 @@ export default function ThankYou() {
             <Controls.Button
                 type="submit"
                 text="Close"
-                onClick={() => window.close()} />
+                onClick={() => close()} />
         </Card>
     );
 }
