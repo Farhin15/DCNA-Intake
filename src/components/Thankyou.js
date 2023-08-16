@@ -26,7 +26,9 @@ export default function ThankYou() {
     const classes = useStyles();
 
     const close = () => {
-        window.close()
+        window.opener = null;
+        window.open('', '_self');
+        window.close();
     }
 
     return (
