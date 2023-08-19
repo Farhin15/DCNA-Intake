@@ -7,10 +7,12 @@ export const apiSlice = createApi({
     // tagTypes: ['Post'],
     endpoints: (builder) => {
         return ({
-            // getPosts: builder.query({
-            //     query: () => '/intake-form',
-            //     providesTags: ['Post'],
-            // }),
+            getAllPost: builder.query({
+                query: () => ({
+                    url: 'states',
+                    method: 'GET'
+                })
+            }),
             addNewPost: builder.mutation({
                 query: ({ url, method, payload }) => {
                     return ({
@@ -27,4 +29,4 @@ export const apiSlice = createApi({
         })
     },
 })
-export const { useGetPostsQuery, useAddNewPostMutation } = apiSlice
+export const { useGetAllPostQuery, useAddNewPostMutation } = apiSlice

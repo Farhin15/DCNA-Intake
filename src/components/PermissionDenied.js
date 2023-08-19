@@ -12,7 +12,7 @@ const useStyles = makeStyles({
     root: {
         maxWidth: 400,
         minWidth: 400,
-        minHeight: 300,
+        minHeight: 100,
         margin: 10,
         padding: 25
     },
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     }
 });
 
-export default function ThankYou() {
+export default function PermissionDenied() {
     const classes = useStyles();
 
     const close = () => {
@@ -38,19 +38,15 @@ export default function ThankYou() {
                 image={dcnaLogo}
                 title="Paella dish"
             /> */}
-            <img src={dcnaLogo} alt="Your Logo" />
+            {/* <img src={dcnaLogo} alt="Your Logo" /> */}
             <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                    Thank You for Submitting the Form
+                    Permission Denied
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    An email has been sent to the provided email address. We will be in touch with you shortly.
+                    At this time, data privacy rights are not provided in your state of residence. Please check the Privacy Notice for more information
                 </Typography>
             </CardContent>
-            <Controls.Button
-                type="submit"
-                text="Close"
-                onClick={() => close()} />
         </Card>
     );
 }

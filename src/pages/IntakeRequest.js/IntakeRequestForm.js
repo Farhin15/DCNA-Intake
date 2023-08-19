@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CircularProgress, FormControl, Grid, Typography, } from '@material-ui/core';
 import Controls from "../../components/controls/Controls";
 import { useForm, Form } from '../../components/useForm';
 import * as employeeService from "../../services/employeeService";
-import { useAddNewPostMutation } from '../../feature/api/apiSlince'
+import { useAddNewPostMutation, useGetAllPostQuery } from '../../feature/api/apiSlince'
 import Alert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import img from '../../asset/image/success.png'
 import ThankYou from '../../components/Thankyou';
+import PermissionDenied from '../../components/PermissionDenied';
 let requestor_typeItems = []
 
 const requestTypeItems = [
@@ -32,11 +33,14 @@ const initialFValues = {
 
 export default function IntakeRquestForm() {
     const [addNewPost, response] = useAddNewPostMutation()
+    const states = useGetAllPostQuery()
+    console.log(states);
     const [open, setOpen] = React.useState(false);
     const [success, setsuccess] = React.useState(false);
     const [Error, setError] = React.useState(false);
     const [isSubmit, setIsSubmit] = React.useState(false);
     const [isSubmiting, setIsSubmiting] = React.useState(false);
+    const [isFormVisisble, setIsFormVisible] = React.useState(false);
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -117,6 +121,8 @@ export default function IntakeRquestForm() {
                             label="Select State Of Residence"
                             value={values.state}
                             onChange={(e) => {
+                                console.log(e.target.value);
+                                setIsFormVisible(e.target.value == 'CA' || e.target.value == 'VA' || e.target.value == 'CO' || e.target.value == 'UT')
                                 resetForm();
                                 setErrors({
                                     first_name: '',
@@ -136,11 +142,11 @@ export default function IntakeRquestForm() {
                                 values.requestor_type = 'Customer';
                                 handleInputChange(e)
                             }}
-                            options={employeeService.getDepartmentCollection()}
+                            options={states?.data ?? []}
                             error={errors.state}
                         />
 
-                        {values.state ? <> <Controls.Checkbox
+                        {values.state && isFormVisisble ? <> <Controls.Checkbox
                             name="isChecked"
                             label="I certify that i am currently a residents of this state"
                             value={values.isChecked}
@@ -222,6 +228,10 @@ export default function IntakeRquestForm() {
                                     onChange={handleInputChange}
                                     error={errors.employeeId}
                                 /></> : <></>}
+                        </> : values.state && !isFormVisisble ? <>
+                            <Grid container justifyContent='center' style={{ textAlign: "center" }}>
+                                <PermissionDenied />
+                            </Grid>
                         </> : <></>}
 
                         <div>
