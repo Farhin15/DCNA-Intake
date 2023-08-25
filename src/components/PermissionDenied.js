@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     }
 });
 
-export default function PermissionDenied() {
+export default function PermissionDenied({ resetForm }) {
     const classes = useStyles();
 
     const close = () => {
@@ -47,6 +47,10 @@ export default function PermissionDenied() {
                     At this time, data privacy rights are not provided in your state of residence. Please check the Privacy Notice for more information
                 </Typography>
             </CardContent>
+            <Controls.Button
+                type="reset"
+                text="Ok"
+                onClick={() => resetForm()} />
         </Card>
     );
 }

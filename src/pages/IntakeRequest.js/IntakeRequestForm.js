@@ -34,7 +34,6 @@ const initialFValues = {
 export default function IntakeRquestForm() {
     const [addNewPost, response] = useAddNewPostMutation()
     const states = useGetAllPostQuery()
-    console.log(states);
     const [open, setOpen] = React.useState(false);
     const [success, setsuccess] = React.useState(false);
     const [Error, setError] = React.useState(false);
@@ -121,7 +120,6 @@ export default function IntakeRquestForm() {
                             label="Select State Of Residence"
                             value={values.state}
                             onChange={(e) => {
-                                console.log(e.target.value);
                                 setIsFormVisible(e.target.value == 'CA' || e.target.value == 'VA' || e.target.value == 'CO' || e.target.value == 'UT')
                                 resetForm();
                                 setErrors({
@@ -230,11 +228,11 @@ export default function IntakeRquestForm() {
                                 /></> : <></>}
                         </> : values.state && !isFormVisisble ? <>
                             <Grid container justifyContent='center' style={{ textAlign: "center" }}>
-                                <PermissionDenied />
+                                <PermissionDenied resetForm={resetForm} />
                             </Grid>
                         </> : <></>}
 
-                        <div>
+                        {isFormVisisble ? <div>
                             <Controls.Button
                                 type="submit"
                                 text="Submit" />
@@ -242,7 +240,7 @@ export default function IntakeRquestForm() {
                                 text="Reset"
                                 color="default"
                                 onClick={resetForm} />
-                        </div>
+                        </div> : <></>}
                     </Grid>}
                 </Grid>
             </Form>
